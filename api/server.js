@@ -19,7 +19,7 @@ server.post('/api/users', async(req, res) => {
 
 server.get('/api/users', async (req, res) => {
     try{
-        const users = await User.findAll()
+        const users = await User.find()
         res.json(users)
     }catch (err) {
         res.status(500).json({message: err.message})
@@ -42,7 +42,7 @@ server.get('/api/users/:id', async (req,res) => {
 
 server.delete('/api/users/:id', async (req, res) => {
     try{
-        const deletedUser = User.delete(req.params.id)
+        const deletedUser = User.remove(req.params.id)
         if(!deletedUser){
             res.status(404).json({message: 'No user with that id'})
         } else{
