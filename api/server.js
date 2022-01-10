@@ -11,7 +11,7 @@ server.post('/api/users', async(req, res) => {
     try{
         const {name, bio} = req.body
         const newUser = await User.insert({name, bio})
-        if(!name && !bio){
+        if(!req.body){
             res.status(400).json({ message: "Please provide name and bio for the user" })
         } else {
             res.status(201).json(newUser)
@@ -63,12 +63,14 @@ server.put('/api/users', async (req, res) => {
     try{
        const updatedUser = await User.update(id, {name, bio}) 
        if(!updatedUser){
-           res.status(404).json({message: `User ${id} not found`})
-       } else {
+            res.status(404).json({message: "The user with the specified ID does not exist" })
+        } else if(!req.body){
+            res.status(400).json({message: "Please provide name and bio for the user"})
+        }else {
            res.json(updatedUser)
        }
     } catch{
-        res.status(500).json({message: err.message})
+        res.status(500).json({message: "The user information could not be modified" })
     }
 })
 
